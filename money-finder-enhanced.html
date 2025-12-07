@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Money Finder – Discover Unclaimed Money & Opportunities</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Find unclaimed money, refunds, and assistance programs in your state. Click, filter, and discover opportunities in seconds.">
+
+  <!-- Open Graph / Social sharing -->
+  <meta property="og:title" content="Money Finder - Unclaimed Money & Assistance">
+  <meta property="og:description" content="Find money you're owed and programs that can help">
+  <meta property="og:type" content="website">
+
+  <!-- Distinctive Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* Prosperity Palette */
+      --gold-50: #fffbeb;
+      --gold-100: #fef3c7;
+      --gold-400: #fbbf24;
+      --gold-500: #f59e0b;
+      --gold-600: #d97706;
+      --emerald-50: #ecfdf5;
+      --emerald-400: #34d399;
+      --emerald-500: #10b981;
+      --emerald-600: #059669;
+      --emerald-700: #047857;
+      
+      /* Neutrals */
+      --slate-950: #020617;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-400: #94a3b8;
+      --slate-300: #cbd5e1;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      
+      /* Semantic Colors */
+      --bg-primary: #0a0f1a;
+      --bg-secondary: var(--slate-950);
+      --bg-card: #12172a;
+      --bg-elevated: #1a2235;
+      --border-subtle: rgba(203, 213, 225, 0.1);
+      --border-medium: rgba(203, 213, 225, 0.2);
+      --text-primary: var(--slate-50);
+      --text-secondary: var(--slate-300);
+      --text-muted: var(--slate-400);
+      
+      /* Shadows */
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+      --shadow-glow: 0 0 20px rgba(251, 191, 36, 0.15);
+      
+      /* Typography */
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    *:focus-visible {
+      outline: 3px solid var(--gold-400);
+      outline-offset: 2px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font-body);
+      color: var(--text-primary);
+      background: 
+        radial-gradient(ellipse at top, rgba(251, 191, 36, 0.08), transparent 60%),
+        radial-gradient(ellipse at bottom left, rgba(16, 185, 129, 0.06), transparent 50%),
+        linear-gradient(180deg, #0a0f1a 0%, #050810 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Animated background orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 0;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .orb-gold {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, var(--gold-500), transparent);
+      top: -200px;
+      right: -100px;
+      animation-delay: 0s;
+    }
+
+    .orb-emerald {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--emerald-500), transparent);
+      bottom: -200px;
+      left: -150px;
+      animation-delay: 5s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(30px, -30px) scale(1.05); }
+      50% { transform: translate(-20px, 20px) scale(0.95); }
+      75% { transform: translate(40px, 10px) scale(1.02); }
+    }
+
+    /* Container */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .container {
+        padding: 2rem 1.5rem 3rem;
+      }
+    }
+
+    /* Header & Hero */
+    header {
+      margin-bottom: 2rem;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
+      border-radius: 24px;
+      padding: 2rem 1.5rem;
+      border: 1px solid var(--border-medium);
+      box-shadow: var(--shadow-xl), var(--shadow-glow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.15), transparent 70%);
+      border-radius: 50%;
+      transform: translate(30%, -30%);
+      pointer-events: none;
+    }
+
+    @media (min-width: 768px) {
+      .hero {
+        padding: 2.5rem 2rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .hero {
+        padding: 3rem 2.5rem;
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--gold-400), var(--gold-600));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: var(--shadow-md), 0 0 20px rgba(251, 191, 36, 0.3);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); box-shadow: var(--shadow-md), 0 0 20px rgba(251, 191, 36, 0.3); }
+      50% { transform: scale(1.05); box-shadow: var(--shadow-md), 0 0 30px rgba(251, 191, 36, 0.5); }
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.125rem;
+    }
+
+    .brand-name {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    .brand-tagline {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .state-selector-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--bg-secondary);
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-medium);
+    }
+
+    .state-label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .state-selector {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border-medium);
+      border-radius: 8px;
+      padding: 0.5rem 2rem 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: all 0.2s;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23f59e0b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.25rem;
+    }
+
+    .state-selector:hover {
+      border-color: var(--gold-400);
+      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+    }
+
+    .hero-main {
+      display: grid;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      .hero-main {
+        grid-template-columns: 1.5fr 1fr;
+        gap: 3rem;
+      }
+    }
+
+    .hero-left h1 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin: 0 0 1rem 0;
+      background: linear-gradient(135deg, var(--gold-400), var(--emerald-400));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    @media (min-width: 640px) {
+      .hero-left h1 {
+        font-size: 2.5rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .hero-left h1 {
+        font-size: 3rem;
+      }
+    }
+
+    .hero-left p {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin: 0 0 1.5rem 0;
+      max-width: 600px;
+    }
+
+    @media (min-width: 640px) {
+      .hero-left p {
+        font-size: 1.125rem;
+      }
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, var(--gold-500), var(--gold-600));
+      color: white;
+      padding: 0.875rem 1.75rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: var(--shadow-lg), 0 0 20px rgba(251, 191, 36, 0.3);
+      transition: all 0.3s;
+      text-decoration: none;
+      font-family: var(--font-body);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-xl), 0 0 30px rgba(251, 191, 36, 0.5);
+    }
+
+    .cta-button:active {
+      transform: translateY(0);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .stats-grid {
+        gap: 1.25rem;
+      }
+    }
+
+    .stat-card {
+      background: var(--bg-secondary);
+      padding: 1.25rem;
+      border-radius: 16px;
+      border: 1px solid var(--border-subtle);
+      transition: all 0.3s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--border-medium);
+      transform: translateY(-2px);
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--gold-400), var(--emerald-400));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    /* Filters */
+    .filters-section {
+      margin-bottom: 2rem;
+    }
+
+    .filters-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .filters-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .filters-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-button, .action-button {
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-medium);
+      padding: 0.625rem 1rem;
+      border-radius: 10px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .filter-button:hover, .action-button:hover {
+      background: var(--bg-elevated);
+      border-color: var(--gold-400);
+      color: var(--text-primary);
+      transform: translateY(-1px);
+    }
+
+    .filter-button.active {
+      background: linear-gradient(135deg, var(--gold-500), var(--gold-600));
+      color: white;
+      border-color: var(--gold-600);
+    }
+
+    .action-button.saved-active {
+      background: linear-gradient(135deg, var(--emerald-500), var(--emerald-600));
+      color: white;
+      border-color: var(--emerald-600);
+    }
+
+    .filters-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    /* Cards */
+    .results-section {
+      margin-bottom: 3rem;
+    }
+
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .results-count {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .cards-grid {
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 640px) {
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .cards-grid {
+        gap: 2rem;
+      }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-medium);
+      border-radius: 20px;
+      padding: 1.5rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.1s; }
+    .card:nth-child(3) { animation-delay: 0.15s; }
+    .card:nth-child(4) { animation-delay: 0.2s; }
+    .card:nth-child(5) { animation-delay: 0.25s; }
+    .card:nth-child(6) { animation-delay: 0.3s; }
+    .card:nth-child(n+7) { animation-delay: 0.35s; }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold-400), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .card:hover {
+      border-color: var(--gold-400);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-xl), 0 0 30px rgba(251, 191, 36, 0.15);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card.high-priority {
+      border-color: var(--gold-400);
+      background: linear-gradient(135deg, var(--bg-card) 0%, rgba(251, 191, 36, 0.05) 100%);
+    }
+
+    .card.high-priority::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold-400), var(--gold-600));
+    }
+
+    .card.featured-partner {
+      border-color: var(--emerald-400);
+      background: linear-gradient(135deg, var(--bg-card) 0%, rgba(16, 185, 129, 0.05) 100%);
+    }
+
+    .card.featured-partner::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--emerald-400), var(--emerald-600));
+    }
+
+    .card-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      gap: 0.75rem;
+    }
+
+    .card-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.375rem 0.75rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-medium);
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .card-pill.partner {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
+      border-color: var(--emerald-400);
+      color: var(--emerald-400);
+    }
+
+    .save-btn {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-medium);
+      border-radius: 8px;
+      padding: 0.375rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-family: var(--font-body);
+    }
+
+    .save-btn:hover {
+      background: var(--bg-elevated);
+      border-color: var(--gold-400);
+      color: var(--text-primary);
+    }
+
+    .save-btn.saved {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
+      border-color: var(--emerald-400);
+      color: var(--emerald-400);
+    }
+
+    .card-icon-wrap {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 0.5rem 0;
+      line-height: 1.3;
+    }
+
+    .card-meta {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin: 0 0 1rem 0;
+    }
+
+    .value-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(251, 191, 36, 0.05));
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      font-weight: 700;
+      color: var(--gold-400);
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
+
+    .card-body {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 0 0 1rem 0;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.25rem 0.625rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .tag-soft {
+      background: rgba(251, 191, 36, 0.1);
+      border-color: rgba(251, 191, 36, 0.3);
+      color: var(--gold-400);
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+    }
+
+    .card-footer > span {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1.25rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold-500), var(--gold-600));
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg), 0 0 20px rgba(251, 191, 36, 0.3);
+    }
+
+    .btn-partner {
+      background: linear-gradient(135deg, var(--emerald-500), var(--emerald-600));
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-partner:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg), 0 0 20px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: var(--bg-card);
+      border-radius: 20px;
+      border: 1px solid var(--border-medium);
+    }
+
+    .empty-state .emoji {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .empty-state h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 0.5rem 0;
+    }
+
+    .empty-state p {
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    /* Loading */
+    .loading-spinner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem;
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid var(--border-medium);
+      border-top-color: var(--gold-400);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Newsletter */
+    .newsletter-section {
+      background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+      border: 1px solid var(--border-medium);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .newsletter-section {
+        padding: 2.5rem 2rem;
+      }
+    }
+
+    .newsletter-section h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0 0 0.75rem 0;
+      background: linear-gradient(135deg, var(--gold-400), var(--emerald-400));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .newsletter-section p {
+      color: var(--text-secondary);
+      margin: 0 0 1.5rem 0;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 0.75rem;
+      max-width: 500px;
+      margin: 0 auto;
+      flex-direction: column;
+    }
+
+    @media (min-width: 640px) {
+      .newsletter-form {
+        flex-direction: row;
+      }
+    }
+
+    .newsletter-input {
+      flex: 1;
+      padding: 0.875rem 1rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-medium);
+      border-radius: 10px;
+      color: var(--text-primary);
+      font-size: 0.9375rem;
+      font-family: var(--font-body);
+    }
+
+    .newsletter-input:focus {
+      outline: none;
+      border-color: var(--gold-400);
+      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+    }
+
+    .newsletter-button {
+      background: linear-gradient(135deg, var(--gold-500), var(--gold-600));
+      color: white;
+      padding: 0.875rem 1.75rem;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: var(--font-body);
+      white-space: nowrap;
+    }
+
+    .newsletter-button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg), 0 0 20px rgba(251, 191, 36, 0.3);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    footer a {
+      color: var(--gold-400);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover {
+      color: var(--gold-300);
+    }
+
+    /* Back to Top */
+    #back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--gold-500), var(--gold-600));
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 1.25rem;
+      cursor: pointer;
+      box-shadow: var(--shadow-lg), 0 0 20px rgba(251, 191, 36, 0.3);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: all 0.3s;
+    }
+
+    #back-to-top:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-xl), 0 0 30px rgba(251, 191, 36, 0.5);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 639px) {
+      .hero-left h1 {
+        font-size: 1.75rem;
+      }
+      
+      .stat-value {
+        font-size: 1.5rem;
+      }
+      
+      .filters-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background Orbs -->
+  <div class="orb orb-gold"></div>
+  <div class="orb orb-emerald"></div>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="hero">
+        <div class="hero-content">
+          <div class="hero-top">
+            <div class="brand">
+              <div class="brand-logo">💰</div>
+              <div class="brand-text">
+                <div class="brand-name">Money Finder</div>
+                <div class="brand-tagline">Discover What's Yours</div>
+              </div>
+            </div>
+            <div class="state-selector-wrapper">
+              <span class="state-label">Location:</span>
+              <select id="state-selector" class="state-selector" aria-label="Select your state" onchange="handleStateChange()">
+                <option value="ALL">Nationwide</option>
+                <option value="MT" selected>Montana</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="hero-main">
+            <div class="hero-left">
+              <h1>Find Money You're Owed</h1>
+              <p>Discover unclaimed money, class action settlements, refunds, and assistance programs available in your state. Start claiming what's yours in minutes.</p>
+              <button class="cta-button" onclick="scrollToOpportunities()">
+                <span>Browse Opportunities</span>
+                <span>→</span>
+              </button>
+            </div>
+
+            <div class="stats-grid">
+              <div class="stat-card">
+                <span class="stat-value" id="stat-opportunities">0</span>
+                <span class="stat-label">Active Opportunities</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-value" id="stat-saved">0</span>
+                <span class="stat-label">Saved by You</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-value">$1M+</span>
+                <span class="stat-label">Potential Value</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-value">Fast</span>
+                <span class="stat-label">Easy Claims</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Filters -->
+    <section class="filters-section" id="filter-container">
+      <div class="filters-header">
+        <h2 class="filters-title">Filter Opportunities</h2>
+        <div class="filters-actions">
+          <button class="action-button" id="show-saved-btn" onclick="toggleShowSaved()">
+            <span>📌</span>
+            <span>Show Saved</span>
+          </button>
+          <button class="action-button" onclick="clearAllFilters()">
+            <span>✕</span>
+            <span>Clear Filters</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="filters-grid" id="filters-container">
+        <!-- Filters will be inserted here -->
+      </div>
+    </section>
+
+    <!-- Loading State -->
+    <div id="main-loading" class="loading-spinner hidden">
+      <div class="spinner"></div>
+    </div>
+
+    <!-- Results -->
+    <section class="results-section">
+      <div class="results-header">
+        <div class="results-count" id="results-count">Loading opportunities...</div>
+      </div>
+      <div class="cards-grid" id="filtered-results-list">
+        <!-- Cards will be inserted here -->
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter-section">
+      <h3>Stay Updated</h3>
+      <p>Get notified when new opportunities are available in your state</p>
+      <form class="newsletter-form" onsubmit="handleNewsletterSignup(event)">
+        <input type="email" class="newsletter-input" placeholder="Enter your email" required>
+        <button type="submit" class="newsletter-button">Subscribe</button>
+      </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>Money Finder helps you discover unclaimed money and assistance programs.</p>
+      <p>Always verify information on official websites before claiming.</p>
+      <p style="margin-top: 1rem;">&copy; 2024 Money Finder. Made with ❤️</p>
+    </footer>
+  </div>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" onclick="scrollToTop()" aria-label="Back to top">↑</button>
+
+  <script>
+    // ========================================================================
+    // STATE & DATA
+    // ========================================================================
+
+    let allOpportunities = [];
+    let currentState = "MT";
+    let activeFilters = [];
+    let savedOpportunities = new Set();
+    let showingSavedOnly = false;
+
+    const CATEGORY_BEST_FOR = {
+      "Unclaimed money & refunds": "Anyone with forgotten accounts or purchases",
+      "Legal settlements & enforcement": "Class members and affected individuals",
+      "Tax & property relief": "Homeowners and taxpayers",
+      "Utilities & energy": "Utility customers and energy users",
+      "Health & medical debt": "Patients and healthcare consumers",
+      "Social services & safety net": "Low-income individuals and families",
+      "Education & student help": "Students and recent graduates",
+      "Veterans": "Veterans and military families",
+      "Tribal programs": "Tribal members and Native communities",
+      "Agriculture & rural": "Farmers and rural residents",
+      "Business & jobs": "Small business owners and job seekers"
+    };
+
+    // ========================================================================
+    // INITIALIZATION
+    // ========================================================================
+
+    window.addEventListener('DOMContentLoaded', init);
+
+    function init() {
+      loadSavedOpportunities();
+      loadCSVData();
+      updateSavedCount();
+    }
+
+    function loadSavedOpportunities() {
+      try {
+        const saved = localStorage.getItem('savedOpportunities');
+        if (saved) {
+          savedOpportunities = new Set(JSON.parse(saved));
+        }
+      } catch (e) {
+        console.error('Error loading saved opportunities:', e);
+      }
+    }
+
+    function saveSavedOpportunities() {
+      try {
+        localStorage.setItem('savedOpportunities', JSON.stringify([...savedOpportunities]));
+        updateSavedCount();
+      } catch (e) {
+        console.error('Error saving opportunities:', e);
+      }
+    }
+
+    function updateSavedCount() {
+      const countEl = document.getElementById('stat-saved');
+      if (countEl) {
+        countEl.textContent = savedOpportunities.size;
+      }
+    }
+
+    // ========================================================================
+    // LOAD DATA
+    // ========================================================================
+
+    function loadCSVData() {
+      showLoading();
+      
+      fetch('opportunities_tagged_with_state.csv')
+        .then(response => response.text())
+        .then(csvText => {
+          allOpportunities = parseCSV(csvText);
+          populateFilters();
+          applyFilters();
+          hideLoading();
+          updateOpportunitiesCount();
+        })
+        .catch(error => {
+          console.error('Error loading CSV:', error);
+          hideLoading();
+          showError();
+        });
+    }
+
+    function parseCSV(csvText) {
+      const lines = csvText.trim().split('\n');
+      const headers = lines[0].split(',').map(h => h.trim());
+      
+      const opportunities = [];
+      for (let i = 1; i < lines.length; i++) {
+        const values = parseCSVLine(lines[i]);
+        if (values.length === headers.length) {
+          const row = {};
+          headers.forEach((header, index) => {
+            row[header] = values[index];
+          });
+          opportunities.push(row);
+        }
+      }
+      return opportunities;
+    }
+
+    function parseCSVLine(line) {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+      
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        
+        if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+          result.push(current.trim());
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      result.push(current.trim());
+      return result;
+    }
+
+    function updateOpportunitiesCount() {
+      const countEl = document.getElementById('stat-opportunities');
+      if (countEl) {
+        countEl.textContent = allOpportunities.length;
+      }
+    }
+
+    // ========================================================================
+    // FILTERS
+    // ========================================================================
+
+    function populateFilters() {
+      const categories = [...new Set(allOpportunities.map(op => op.category))].filter(Boolean).sort();
+      
+      const container = document.getElementById('filters-container');
+      container.innerHTML = categories.map(cat => 
+        `<button class="filter-button" data-filter="${escapeHtml(cat)}" onclick="toggleFilter('${escapeHtml(cat)}')">${escapeHtml(cat)}</button>`
+      ).join('');
+    }
+
+    function toggleFilter(category) {
+      const index = activeFilters.indexOf(category);
+      if (index > -1) {
+        activeFilters.splice(index, 1);
+      } else {
+        activeFilters.push(category);
+      }
+      
+      const buttons = document.querySelectorAll('.filter-button');
+      buttons.forEach(btn => {
+        if (btn.dataset.filter === category) {
+          btn.classList.toggle('active');
+        }
+      });
+      
+      applyFilters();
+      trackEvent('filter_changed', { filters: activeFilters, state: currentState });
+    }
+
+    function clearAllFilters() {
+      activeFilters = [];
+      const buttons = document.querySelectorAll('.filter-button');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      applyFilters();
+      trackEvent('filters_cleared', { state: currentState });
+    }
+
+    function toggleShowSaved() {
+      showingSavedOnly = !showingSavedOnly;
+      const btn = document.getElementById('show-saved-btn');
+      if (showingSavedOnly) {
+        btn.classList.add('saved-active');
+      } else {
+        btn.classList.remove('saved-active');
+      }
+      applyFilters();
+      trackEvent('show_saved_toggled', { showing_saved: showingSavedOnly });
+    }
+
+    window.toggleSaveOpportunity = function(opportunityId) {
+      if (savedOpportunities.has(opportunityId)) {
+        savedOpportunities.delete(opportunityId);
+      } else {
+        savedOpportunities.add(opportunityId);
+      }
+      saveSavedOpportunities();
+      applyFilters();
+      trackEvent('opportunity_saved', { 
+        opportunity_id: opportunityId,
+        saved: savedOpportunities.has(opportunityId)
+      });
+    };
+
+    function applyFilters() {
+      let filtered = allOpportunities.filter(op => {
+        const matchesState = currentState === 'ALL' || op.state === currentState;
+        const matchesCategory = activeFilters.length === 0 || activeFilters.includes(op.category);
+        const matchesSaved = !showingSavedOnly || savedOpportunities.has(op.id);
+        return matchesState && matchesCategory && matchesSaved;
+      });
+      
+      renderOpportunities(filtered);
+    }
+
+    function renderOpportunities(opportunities) {
+      const container = document.getElementById('filtered-results-list');
+      const countEl = document.getElementById('results-count');
+      
+      if (opportunities.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="emoji">🔍</div>
+            <h3>No opportunities found</h3>
+            <p>Try adjusting your filters or selecting a different state.</p>
+          </div>
+        `;
+        countEl.textContent = 'No opportunities found';
+        return;
+      }
+      
+      countEl.textContent = `Showing ${opportunities.length} ${opportunities.length === 1 ? 'opportunity' : 'opportunities'}`;
+      
+      const cardsHTML = opportunities.map(op => {
+        const cardData = mapRowToCardData(op);
+        return makeCardHTML(cardData);
+      }).join('');
+      
+      container.innerHTML = cardsHTML;
+    }
+
+    // ========================================================================
+    // STATE CHANGE
+    // ========================================================================
+
+    function handleStateChange() {
+      const selector = document.getElementById('state-selector');
+      currentState = selector.value;
+      applyFilters();
+      trackEvent('state_changed', { state: currentState });
+    }
+
+    // ========================================================================
+    // DATA MAPPING
+    // ========================================================================
+
+    function mapRowToCardData(row) {
+      const priorityRaw = (row.priority_for_user || "").toLowerCase();
+      let priority = "normal";
+      if (priorityRaw === "high") priority = "high";
+
+      const isPartner = row.is_partner === "TRUE" || row.is_partner === "true";
+      const isSaved = savedOpportunities.has(row.id);
+
+      const estValue = (row.est_value || "").trim();
+      const tags = [];
+
+      if (row.money_speed) tags.push(row.money_speed + " money");
+      if (row.difficulty) tags.push("Difficulty: " + row.difficulty);
+      if (row.proof_simple) tags.push("Paperwork: " + row.proof_simple);
+      if (row.category) tags.push(row.category);
+
+      const metaParts = [];
+      if (row.company_or_agency) metaParts.push(row.company_or_agency);
+      if (row.money_speed) metaParts.push(row.money_speed);
+      if (row.difficulty) metaParts.push(row.difficulty);
+
+      const infoUrl = (row.url_info || "").trim();
+      const claimUrl = (row.url_claim || "").trim();
+      const mainUrl = claimUrl || infoUrl;
+
+      let linkLabel = "See details";
+      if (claimUrl) {
+        linkLabel = "Go to claim page";
+      } else if (infoUrl) {
+        linkLabel = "Open info page";
+      }
+
+      let bestFor = row.who_qualifies || CATEGORY_BEST_FOR[row.category] || "Check eligibility on official site";
+
+      return {
+        id: row.id || "",
+        priority,
+        badge: priority === "high" ? "Quick win" : "Worth a look",
+        icon: getCategoryIcon(row.category),
+        title: row.title || "Untitled opportunity",
+        meta: metaParts.join(" · "),
+        value_text: estValue || null,
+        body: row.description_short || row.notes_for_user || row.how_to_apply || "Program that may help with money or bills.",
+        tags,
+        best_for: bestFor,
+        link_label: linkLabel,
+        link_url: mainUrl || "#",
+        is_partner: isPartner,
+        is_saved: isSaved
+      };
+    }
+
+    function getCategoryIcon(category) {
+      const cat = (category || "").trim();
+      const icons = {
+        "Unclaimed money & refunds": "💵",
+        "Legal settlements & enforcement": "📝",
+        "Tax & property relief": "🏡",
+        "Utilities & energy": "⚡",
+        "Health & medical debt": "🏥",
+        "Social services & safety net": "❤️",
+        "Education & student help": "🎓",
+        "Veterans": "🇺🇸",
+        "Tribal programs": "🪶",
+        "Agriculture & rural": "🚜",
+        "Business & jobs": "💼"
+      };
+      return icons[cat] || "✨";
+    }
+
+    // ========================================================================
+    // HTML GENERATION
+    // ========================================================================
+
+    function makeCardHTML(op) {
+      const classes = ["card"];
+      if (op.priority === "high") classes.push("high-priority");
+      if (op.is_partner) classes.push("featured-partner");
+
+      const tagsHTML = (op.tags || [])
+        .map((tag, index) => {
+          let extraClass = "";
+          if (index === 0) extraClass = " tag-soft";
+          return `<span class="tag${extraClass}">${escapeHtml(tag)}</span>`;
+        })
+        .join("");
+
+      const valueHTML = op.value_text
+        ? `<div class="value-indicator"><span>💰</span><span>${escapeHtml(op.value_text)}</span></div>`
+        : "";
+
+      let btnClass = "btn btn-primary";
+      if (op.is_partner) {
+        btnClass = "btn btn-partner";
+      }
+
+      const safeUrl = op.link_url || "#";
+      const badge = op.is_partner ? "⭐ Featured Partner" : op.badge;
+      const pillClass = op.is_partner ? "card-pill partner" : "card-pill";
+
+      const saveButtonHTML = `
+        <button 
+          class="save-btn${op.is_saved ? ' saved' : ''}" 
+          data-opportunity-id="${escapeHtml(op.id)}"
+          onclick="toggleSaveOpportunity('${escapeHtml(op.id)}'); event.stopPropagation();"
+          aria-label="${op.is_saved ? 'Remove from saved' : 'Save opportunity'}"
+        >
+          <span class="icon">${op.is_saved ? '✅' : '📌'}</span>
+          <span>${op.is_saved ? 'Saved' : 'Save'}</span>
+        </button>
+      `;
+
+      return `
+        <article 
+          class="${classes.join(" ")}" 
+          data-opportunity="${escapeHtml(op.id)}"
+        >
+          <div class="card-top-row">
+            <div class="${pillClass}">${escapeHtml(badge)}</div>
+            ${saveButtonHTML}
+          </div>
+          <div class="card-icon-wrap">${op.icon}</div>
+          <h2 class="card-title">${escapeHtml(op.title)}</h2>
+          <p class="card-meta">${escapeHtml(op.meta)}</p>
+          ${valueHTML}
+          <p class="card-body">${escapeHtml(op.body)}</p>
+          <div class="tag-row">
+            ${tagsHTML}
+          </div>
+          <div class="card-footer">
+            <span>Best for: ${escapeHtml(op.best_for)}</span>
+            <a 
+              href="${escapeHtml(safeUrl)}" 
+              class="${btnClass}" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              onclick="trackClick('${escapeHtml(op.id)}')"
+            >
+              <span class="icon">↗</span>
+              <span>${escapeHtml(op.link_label)}</span>
+            </a>
+          </div>
+        </article>
+      `;
+    }
+
+    // ========================================================================
+    // LOADING STATES
+    // ========================================================================
+
+    function showLoading() {
+      document.getElementById("main-loading")?.classList.remove("hidden");
+    }
+
+    function hideLoading() {
+      document.getElementById("main-loading")?.classList.add("hidden");
+    }
+
+    function showError() {
+      const container = document.getElementById('filtered-results-list');
+      const errorHTML = `
+        <div class="empty-state">
+          <div class="emoji">⚠️</div>
+          <h3>Couldn't load opportunities</h3>
+          <p>Please refresh the page to try again.</p>
+        </div>
+      `;
+      if (container) container.innerHTML = errorHTML;
+    }
+
+    // ========================================================================
+    // NEWSLETTER SIGNUP
+    // ========================================================================
+
+    function handleNewsletterSignup(e) {
+      e.preventDefault();
+      
+      const form = e.target;
+      const emailInput = form.querySelector('input[type="email"]');
+      const email = emailInput.value;
+
+      trackEvent('newsletter_signup', { 
+        email: email,
+        state: currentState 
+      });
+
+      alert(`Thanks for signing up! We'll send ${currentState === 'ALL' ? 'nationwide' : currentState} opportunities to ${email}`);
+      
+      form.reset();
+    }
+
+    // ========================================================================
+    // SCROLL FUNCTIONS
+    // ========================================================================
+
+    function scrollToOpportunities() {
+      const section = document.getElementById("filter-container");
+      if (section) {
+        const yOffset = -20; 
+        const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.scrollToOpportunities = scrollToOpportunities;
+    window.scrollToTop = scrollToTop;
+
+    // Show/hide back to top button
+    let scrollTimer;
+    window.addEventListener('scroll', () => {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        const backToTopBtn = document.getElementById('back-to-top');
+        if (backToTopBtn) {
+          if (window.pageYOffset > 300) {
+            backToTopBtn.style.display = 'flex';
+          } else {
+            backToTopBtn.style.display = 'none';
+          }
+        }
+      }, 100);
+    });
+
+    // ========================================================================
+    // ANALYTICS
+    // ========================================================================
+
+    function trackClick(opportunityId) {
+      trackEvent('opportunity_click', {
+        opportunity_id: opportunityId,
+        state: currentState,
+        filters: activeFilters,
+        was_saved: savedOpportunities.has(opportunityId),
+        showing_saved_only: showingSavedOnly
+      });
+    }
+
+    function trackEvent(eventName, eventData) {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', eventName, eventData);
+      }
+      console.log('Event:', eventName, eventData);
+    }
+
+    // ========================================================================
+    // UTILITY FUNCTIONS
+    // ========================================================================
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text == null ? '' : String(text);
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>
