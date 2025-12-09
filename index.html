@@ -216,10 +216,45 @@
     <!-- Opportunities List -->
     <section class="relative z-10 px-4 py-6 sm:px-6 lg:px-8 mb-20">
         <div class="max-w-7xl mx-auto">
-            <div class="flex items-center justify-between mb-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
                 <h3 class="text-2xl font-black text-gray-800">
                     <span class="text-purple-600" id="oppCount">(6)</span> Opportunities
                 </h3>
+
+                <!-- Share bar -->
+                <div class="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-3 py-1 shadow-sm text-xs sm:text-sm text-gray-600">
+                    <span class="hidden sm:inline font-semibold">Share:</span>
+                    <button type="button"
+                            onclick="shareCopyPage()"
+                            class="flex items-center gap-1 px-2 py-1 rounded-full hover:bg-gray-100 transition-colors">
+                        <span aria-hidden="true">🔗</span>
+                        <span class="hidden md:inline">Copy</span>
+                    </button>
+                    <a href="#"
+                       onclick="shareSmsPage(event)"
+                       class="flex items-center gap-1 px-2 py-1 rounded-full hover:bg-gray-100 transition-colors">
+                        <span aria-hidden="true">💬</span>
+                        <span class="hidden md:inline">Text</span>
+                    </a>
+                    <a href="#"
+                       onclick="shareEmailPage(event)"
+                       class="flex items-center gap-1 px-2 py-1 rounded-full hover:bg-gray-100 transition-colors">
+                        <span aria-hidden="true">✉️</span>
+                        <span class="hidden md:inline">Email</span>
+                    </a>
+                    <a href="#"
+                       onclick="shareFacebookPage(event)"
+                       class="flex items-center gap-1 px-2 py-1 rounded-full hover:bg-gray-100 transition-colors">
+                        <span aria-hidden="true">f</span>
+                        <span class="hidden md:inline">Facebook</span>
+                    </a>
+                    <a href="#"
+                       onclick="shareRedditPage(event)"
+                       class="flex items-center gap-1 px-2 py-1 rounded-full hover:bg-gray-100 transition-colors">
+                        <span aria-hidden="true">👽</span>
+                        <span class="hidden md:inline">Reddit</span>
+                    </a>
+                </div>
             </div>
 
             <div id="opportunitiesGrid" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
@@ -697,7 +732,101 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
+
+  // ------- Sharing helpers -------
+  function getCurrentShareInfo() {
+    const url = window.location.href.split('#')[0];
+    const title = document.title || 'eosguide';
+    return { url, title };
+  }
+
+  function shareCopyPage() {
+    const { url } = getCurrentShareInfo();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url)
+        .then(() => {
+          alert('Link copied to clipboard.');
+        })
+        .catch(() => {
+          alert('Copy failed. You can still copy from the address bar.');
+        });
+    } else {
+      prompt('Copy this link:', url);
+    }
+  }
+
+  function shareSmsPage(event) {
+    event.preventDefault();
+    const { url, title } = getCurrentShareInfo();
+    const body = encodeURIComponent(title + ' - ' + url);
+    window.location.href = 'sms:?&body=' + body;
+  }
+
+  function shareEmailPage(event) {
+    event.preventDefault();
+    const { url, title } = getCurrentShareInfo();
+    const subject = encodeURIComponent(title);
+    const body = encodeURIComponent('Thought this might be useful:\n\n' + url);
+    window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+  }
+
+  function shareFacebookPage(event) {
+    event.preventDefault();
+    const { url } = getCurrentShareInfo();
+    const shareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+    window.open(shareUrl, '_blank');
+  }
+
+  function shareRedditPage(event) {
+    event.preventDefault();
+    const { url, title } = getCurrentShareInfo();
+    const shareUrl = 'https://www.reddit.com/submit?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title);
+    window.open(shareUrl, '_blank');
+  }
+
+  // ------- Mobile bottom nav helpers -------
+  function mobileNavHome() {
+    filterCategory('all');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function mobileNavSaved() {
+    filterCategory('saved');
+    const oppSection = document.getElementById('opportunitiesGrid');
+    if (oppSection) {
+      oppSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  function mobileNavInfo() {
+    const about = document.getElementById('about');
+    if (about) {
+      about.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+
 </script>
+
+
+<!-- Mobile bottom nav -->
+<nav class="fixed bottom-0 inset-x-0 z-40 bg-white/95 border-t border-gray-200 shadow-[0_-4px_12px_rgba(15,23,42,0.06)] md:hidden">
+  <div class="max-w-7xl mx-auto flex items-center justify-around py-2 text-xs text-gray-600">
+    <button type="button" onclick="mobileNavHome()" class="flex flex-col items-center gap-1 px-3 py-1">
+      <span aria-hidden="true">🏠</span>
+      <span>Home</span>
+    </button>
+    <button type="button" onclick="mobileNavSaved()" class="flex flex-col items-center gap-1 px-3 py-1">
+      <span aria-hidden="true">🔖</span>
+      <span>Saved</span>
+    </button>
+    <button type="button" onclick="mobileNavInfo()" class="flex flex-col items-center gap-1 px-3 py-1">
+      <span aria-hidden="true">❓</span>
+      <span>About</span>
+    </button>
+  </div>
+</nav>
+
 
 </body>
 </html>
